@@ -1,0 +1,9 @@
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint
+    - esbenp.prettier-vscode
+
+tasks:
+  - init: |
+      npm i -g expo-cli
+    command: npm start

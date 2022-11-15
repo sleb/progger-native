@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createTheme, ThemeProvider } from "@rneui/themed";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import LoginScreen from "./components/LoginScreen/LoginScreen";
+import RegisterScreen from "./components/RegisterScreen/RegisterScreen";
+import { AuthStackParamList } from "./lib/props";
+
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
+const theme = createTheme({
+  lightColors: { primary: "#003049" },
+  components: { Button: { radius: 5 } },
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <ThemeProvider theme={theme}>
+        <NavigationContainer>
+          <AuthStack.Navigator initialRouteName="login">
+            <AuthStack.Screen
+              name="login"
+              options={{ title: "Log In" }}
+              component={LoginScreen}
+            />
+            <AuthStack.Screen
+              name="register"
+              options={{ title: "Register" }}
+              component={RegisterScreen}
+            />
+          </AuthStack.Navigator>
+        </NavigationContainer>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
