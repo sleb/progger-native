@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Button, Input, useTheme } from "@rneui/themed";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useAuth } from "../../hooks/auth";
 import { required } from "../../lib/form-rules";
 import { AuthStackParamList } from "../../lib/props";
 import AuthFormContainer from "../AuthFormContainer";
@@ -16,9 +17,14 @@ type FormData = {
 const RegisterScreen = ({ navigation }: Props) => {
   const { theme } = useTheme();
   const { control, handleSubmit } = useForm<FormData>({ mode: "onBlur" });
+  const { register } = useAuth();
 
-  const onSubmit = (data: FormData) => {
-    alert(JSON.stringify(data));
+  const onSubmit = async ({ email, password }: FormData) => {
+    try {
+      await register(email, password);
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (
@@ -33,6 +39,8 @@ const RegisterScreen = ({ navigation }: Props) => {
         }) => (
           <Input
             placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
             onChangeText={onChange}
             onBlur={onBlur}
             value={value}
