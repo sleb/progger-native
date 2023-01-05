@@ -1,5 +1,3 @@
-import { Divider } from "@rneui/base";
-import { Text } from "@rneui/themed";
 import React, { ReactNode } from "react";
 import {
   Keyboard,
@@ -7,10 +5,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { Divider, Text, useTheme } from "react-native-paper";
 
 type Props = { children: ReactNode; title: string; subtitle: string };
 
 const AuthFormContainer = ({ children, title, subtitle }: Props) => {
+  const theme = useTheme();
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -35,13 +36,18 @@ const AuthFormContainer = ({ children, title, subtitle }: Props) => {
             shadowRadius: 5,
           }}
         >
-          <View style={{ alignItems: "center" }}>
-            <Text h3>{title}</Text>
-            <Divider
-              style={{ width: "80%", marginTop: 10, marginBottom: 5 }}
-              subHeader={subtitle}
-              subHeaderStyle={{ marginBottom: 10 }}
-            />
+          <View
+            style={{
+              alignItems: "stretch",
+            }}
+          >
+            <Text
+              variant="headlineMedium"
+              style={{ alignSelf: "center", color: theme.colors.primary }}
+            >
+              {title}
+            </Text>
+            <Divider />
             {children}
           </View>
         </View>

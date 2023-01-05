@@ -1,42 +1,56 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createTheme, ThemeProvider } from "@rneui/themed";
+import {
+  IconButton,
+  Provider as PaperProvider,
+  useTheme,
+} from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import HomeScreen from "./components/HomeScreen/HomeScreen";
 import LoginScreen from "./components/LoginScreen/LoginScreen";
+import ProgramScreen from "./components/ProgramScreen/ProgramScreen";
 import RegisterScreen from "./components/RegisterScreen/RegisterScreen";
+import { useAuth } from "./hooks/auth";
 import { AuthStackParamList, MainStackParamList } from "./lib/props";
 import { userIdState } from "./state/user";
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 
-const theme = createTheme({
-  lightColors: { primary: "#003049" },
-  components: { Button: { radius: 5 } },
-});
-
 const Navigator = () => {
   const userId = useRecoilValue(userIdState);
+  const { logOut } = useAuth();
+  const theme = useTheme();
 
   return (
     <NavigationContainer>
       {userId ? (
-        <MainStack.Navigator initialRouteName="home">
-          <MainStack.Screen
-            name="home"
-            options={{ title: "Home" }}
-            component={HomeScreen}
-          />
+        <MainStack.Navigator
+          initialRouteName="home"
+          screenOptions={{
+            headerTintColor: theme.colors.primary,
+            title: "Progger",
+            headerRight: () => (
+              <IconButton
+                icon="logout-variant"
+                onPress={logOut}
+                iconColor={theme.colors.primary}
+              />
+            ),
+          }}
+        >
+          <MainStack.Screen name="home" component={HomeScreen} />
+          <MainStack.Screen name="program" component={ProgramScreen} />
         </MainStack.Navigator>
       ) : (
-        <AuthStack.Navigator initialRouteName="login">
-          <AuthStack.Screen
-            name="login"
-            options={{ title: "Log In" }}
-            component={LoginScreen}
-          />
+        <AuthStack.Navigator
+          initialRouteName="login"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <AuthStack.Screen name="login" component={LoginScreen} />
           <AuthStack.Screen
             name="register"
             options={{ title: "Register" }}
@@ -48,14 +62,16 @@ const Navigator = () => {
   );
 };
 
-export default function App() {
+const App = () => {
   return (
     <RecoilRoot>
       <SafeAreaProvider>
-        <ThemeProvider theme={theme}>
+        <PaperProvider>
           <Navigator />
-        </ThemeProvider>
+        </PaperProvider>
       </SafeAreaProvider>
     </RecoilRoot>
   );
-}
+};
+
+export default App;

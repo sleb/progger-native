@@ -5,4 +5,5 @@ export type AuthStackParamList = {
 
 export type MainStackParamList = {
   home: undefined;
+  program: { programId: string };
 };

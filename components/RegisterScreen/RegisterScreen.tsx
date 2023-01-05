@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Button, Input, useTheme } from "@rneui/themed";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { StatusBar } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import { useAuth } from "../../hooks/auth";
 import { required } from "../../lib/form-rules";
 import { AuthStackParamList } from "../../lib/props";
@@ -15,7 +16,6 @@ type FormData = {
 };
 
 const RegisterScreen = ({ navigation }: Props) => {
-  const { theme } = useTheme();
   const { control, handleSubmit } = useForm<FormData>({ mode: "onBlur" });
   const { register } = useAuth();
 
@@ -28,75 +28,79 @@ const RegisterScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <AuthFormContainer title="Register" subtitle="Create a new account">
-      <Controller
-        control={control}
-        name="email"
-        rules={{ required }}
-        render={({
-          field: { onChange, onBlur, value },
-          fieldState: { error },
-        }) => (
-          <Input
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            errorStyle={{ color: theme.colors.error }}
-            errorMessage={error?.message}
-            renderErrorMessage={true}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="password"
-        rules={{ required }}
-        render={({
-          field: { onChange, onBlur, value },
-          fieldState: { error },
-        }) => (
-          <Input
-            placeholder="Password"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            secureTextEntry
-            errorStyle={{ color: theme.colors.error }}
-            errorMessage={error?.message}
-            renderErrorMessage={true}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="confirmPassword"
-        rules={{ required }}
-        render={({
-          field: { onChange, onBlur, value },
-          fieldState: { error },
-        }) => (
-          <Input
-            placeholder="Confirm Password"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            value={value}
-            secureTextEntry
-            errorStyle={{ color: theme.colors.error }}
-            errorMessage={error?.message}
-            renderErrorMessage={true}
-          />
-        )}
-      />
-      <Button title="Register" onPress={handleSubmit(onSubmit)} />
-      <Button
-        title="... or log in"
-        type="clear"
-        onPress={() => navigation.navigate("login")}
-      />
-    </AuthFormContainer>
+    <>
+      <StatusBar barStyle="dark-content" />
+      <AuthFormContainer title="Register" subtitle="Create a new account">
+        <Controller
+          control={control}
+          name="email"
+          rules={{ required }}
+          render={({
+            field: { onChange, onBlur, value },
+            fieldState: { error },
+          }) => (
+            <TextInput
+              style={{ marginTop: 10 }}
+              label="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              error={!!error}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required }}
+          render={({
+            field: { onChange, onBlur, value },
+            fieldState: { error },
+          }) => (
+            <TextInput
+              style={{ marginTop: 10 }}
+              label="Password"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              secureTextEntry
+              error={!!error}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="confirmPassword"
+          rules={{ required }}
+          render={({
+            field: { onChange, onBlur, value },
+            fieldState: { error },
+          }) => (
+            <TextInput
+              style={{ marginTop: 10 }}
+              label="Confirm Password"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              secureTextEntry
+              error={!!error}
+            />
+          )}
+        />
+        <Button
+          mode="contained"
+          onPress={handleSubmit(onSubmit)}
+          style={{ marginTop: 10 }}
+        >
+          Register
+        </Button>
+        <Button mode="text" onPress={() => navigation.navigate("login")}>
+          ... or log in
+        </Button>
+      </AuthFormContainer>
+    </>
   );
 };
 
