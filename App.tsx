@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import HomeScreen from "./components/HomeScreen/HomeScreen";
 import LoginScreen from "./components/LoginScreen/LoginScreen";
+import NewProgram from "./components/NewProgram/NewProgram";
 import ProgramScreen from "./components/ProgramScreen/ProgramScreen";
 import RegisterScreen from "./components/RegisterScreen/RegisterScreen";
 import { useAuth } from "./hooks/auth";
@@ -30,7 +31,6 @@ const Navigator = () => {
           initialRouteName="home"
           screenOptions={{
             headerTintColor: theme.colors.primary,
-            title: "Progger",
             headerRight: () => (
               <IconButton
                 icon="logout-variant"
@@ -40,8 +40,21 @@ const Navigator = () => {
             ),
           }}
         >
-          <MainStack.Screen name="home" component={HomeScreen} />
-          <MainStack.Screen name="program" component={ProgramScreen} />
+          <MainStack.Screen
+            name="home"
+            options={{ title: "Home" }}
+            component={HomeScreen}
+          />
+          <MainStack.Screen
+            name="program"
+            options={{ title: "Program" }}
+            component={ProgramScreen}
+          />
+          <MainStack.Screen
+            name="new"
+            options={{ title: "New Program" }}
+            component={NewProgram}
+          />
         </MainStack.Navigator>
       ) : (
         <AuthStack.Navigator

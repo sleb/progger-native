@@ -16,6 +16,14 @@ export const subscribeToProgramsForUser = (
   };
 };
 
+export const deleteProgram = async (id: string): Promise<void> => {
+  const index = fakePrograms.findIndex((p) => p.id === id);
+  if (index >= 0) {
+    fakePrograms.splice(index, 1);
+    fireCallbacks();
+  }
+};
+
 export const getProgramForId = (id: string): Program | undefined => {
   return fakePrograms.find((p) => p.id === id);
 };
